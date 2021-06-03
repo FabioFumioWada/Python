@@ -1,0 +1,198 @@
+# --> Abrir CSV
+pd.read_csv("nome_do_arquivo" , enconding = "UTF-8" , sep= ";" , header = 0 , usecols = ["Coluna1","Coluna2"] , nrows = 100)
+
+	enconding = Informe o enconding do arquivo (para descobrir qual o enconding do arquivo, verifique o OneNote)
+	sep = Informe o caracter separador dos dados\colunas
+	header = Informe a linha em que estão os cabeçalhos dos seus dados\colunas. Começando pelo zero.
+	usecols = Informe somente as colunas que vc quer importar para o dataframe.
+	nrows = Informe a quantidade de linhas que deseja importar para o dataframe.
+
+# --> Abrir Excel XLS/XLSX
+pd.read.excel("nome_do_arquivo" , sheet_name="numero_da_pasta"/"nome_da_pasta")
+
+Ex: pd.read.excel("nome_do_arquivo" , sheet_name="Plan1")
+
+sheet_name = Informe o número ou o nome da pasta específica do arquivo excel que deseja importar. Começando pelo zero.
+
+# --> Verificar nomes das pastas de um arquivo Excel XLS/XLSX
+
+pd.ExcelFile("nome_do_arquivo") \ sheet_names 
+
+df_arquivoexcel = pd.ExcelFile("nome_do_arquivo")
+df_arquivoexcel.sheet_names
+
+Resultado = ['Plan1','Plan2']
+
+# --> Usando parse para selecionar as abas\pastas da planilha Excel XLS\XLSX
+
+df_arquivoexcel = pd.ExcelFile("nome_do_arquivo")
+aba1 = df_arquivo_excel.parse("Plan1")
+aba2 = df_arquivo_excel.parse("Plan2")
+
+
+# --> Usando ODBC \ SQL Server
+
+import pyodbc
+
+dados_sql = pd.read_sql(query ,  conn)
+
+query = é a query propriamente escrita
+conn = deve-se criar uma função com a string de conexão do sql server\odbc
+
+Site para ajuda:
+https://www.youtube.com/watch?v=jUqlihjX6Lg&list=PL4OAe-tL47sa1McMctk5pdPd5eTAp3drk&index=4
+
+
+# --> Selecionando dados
+
+dados = pd.read_excel ("nome_do_arquivo.xlsx")
+
+- Lista o campo FirstName
+dados["FirstName"].head()
+
+- Selecionando mais de uma coluna
+dados[["FirstName" , "MiddleName"]].head()
+
+- Selecionando por notação de ponto
+dados.FirstName.head() #Neste caso não é possível selecionar mais de uma coluna, como no exemplo acima.
+
+- Coluna Nova
+dados["nome_completo"] = dados["FirstName"] + " " + dados["MiddleName"] + " " + dados["LastName"]
+
+
+# --> Loc e Iloc (Intervalo / Faixa)
+
+dados2 = pd.read_excel ("nome_do_arquivo.xlsx")
+
+loc = selecionando dados a partir de um intervalo/faixa
+
+dados2.loc[0] - lista o objeto
+dados2.loc[0:3] - retorna um intervalo de registros das linhas 0 a 3
+dados2.loc[[0,1,2,3]] - semelhante ao comando acima, somente com uma sintaxe diferente, 
+						   porém pode ser usado para selecionar linhas específicas
+dados2.loc[4:6, "FirstName"] - lista o campo FirstName do intervalo 4 e 6
+dados2.loc[4:6, ["FirstName", "LastName"]] - lista os campos FirstName e LastName do intervalo 4 a 6
+dados2.loc[4:6, "NameStyle":"LastName"] - lista os dados do intervalo 4 a 6 dentro do intervalo dos campos NameStyle e LastName
+ 
+iloc = selecionando dados a partir de um intervalo/faixa (somente números)
+
+dados3 = pd.read_excel ("nome_do_arquivo.xlsx")
+dados3.iloc[2:6] - lista os dados de 2 a 5 (não considera o último valor)
+dados3.iloc[2:6 ,  3:5] - lista os dados dos registros de 2 a 5 (não considera o último valor), e das colunas 3 a 4 (não considera o 
+								último valor)
+
+
+# --> Ordenando Dados
+
+df.sort_values("FirstName").head() -- ordena pelo campo FirstName
+df.sort_values("FirstName", inplace = True) -- grava\efetiva esta ordenação diretamente no df. 
+												Após a execução deste comando verifice com df.head()
+df.sort_values(["FirstName","LastName"]) -- ordenando por dois campos. Exemplo1
+df.sort_values(by = ["FirstName","LastName"]).head() -- ordenando por dois campos. Exemplo2
+df.sort_values("FirstName", ascending = True).head() -- ordenação ascendente asc
+df.sort_values(by = ["FirstName","LastName"].head() ascending=[False,True]).head() -- primeira coluna A ao Z e segunda coluna de Z a A
+	Usando variáveis:  	v_colunas = ["FirstName","LastName"]
+						v_ordenacao = ["True","False"]
+						df.sort_values(by = v_colunas, ascending = v_ordenacao)
+
+
+# --> Filter / Filtro
+
+-- duas formas de filtrar alguns campos
+df[["job","marital"]].head()
+df.filter(items = ["job","marital"]).head()
+
+-- like
+df.filter(like = "ta").head()
+	Neste exemplo ele listou os campos\colunas "marital" e "contact" pois ambos tem a string pesquisada no like "ta"
+
+-- regex (expressão regular) - pesquisa mais complexa
+www.regexr.com
+df.filter(regex = ".day.") -- neste exemplo ele pesquisa todos os campos que tenha algum caracter + a expresão "day" 
+								seguida de outro caracter. Semelhante ao % do like do SQL Server.
+df.filter(regex = ".[0-9]+[0-9]") -- neste exemplo ele pesquisa todos os campos que tenha algum caracter + a expresão "day" 
+								seguida de outro caracter. Semelhante ao % do like do SQL Server.
+
+
+# --> Operadores Lógicos \ Listas Lógicas \ Vetores
+
+df.estado_civil == "solteiro" -- neste exemplo ele listará somente um campo com True ou False para cada linha
+df[df.estado_civil == "solteiro"].head() -- neste exemplo ele trará todos os campos que tenha o estado_civil como soteiro
+
+-- E , AND (&)
+df[(df.estado_civil == "solteiro") & (df.educacao = "primario")].head() -- neste exemplo ele lista os registros com estado_civil = solteiro
+																			e educacao = primrario
+
+
+df[(df.estado_civil == "solteiro") & (df.educacao = "primario")][["ano","profissao"]] --  neste exemplo ele continua listando os registros 
+																						com estado_civil = solteiro e educacao = primrario
+																						e lista somente os campos "ano e profissão"
+
+-- OU, OR (|)
+df[(df.marital == "casado") & ((df.educacao == "primario" | (df.educacao == "secundario"))] -- neste exemplo ele seleciona os registros cujo
+																								campo marital seja igual a "casado"
+																								e o campo educação seja "primário" OU "secundario"
+
+
+# --> ISIN -- igual o TRIM do SQL
+df[(df.marital == "casado") & (df.educacao.isin(["primario","secundario"]))].shape -- semelhante ao exemplo acima OU, OR (|)
+
+
+# --> GROUP BY
+Função de Agrupamento
+
+df.idade.mean() --> média da idade
+df.idade.max() --> maior idade
+df.idade.min() --> menor idade
+
+-- média da idade das pessoas casadas
+	-- poderia selecionar somente as pessoas casadas e depois fazer a média
+	df[df.estadocivil == "casado"].idade.mean()
+
+-- usando group by
+	-- lista o estadocivil e a idade, agrupamento o mesmo pela média de idade
+	df[["estadocivil","idade"]].groupby(["estadocivil"]).mean()
+
+	-- lista o estadocivil o nível de escolaridade e a idade, agrupamento o mesmo pela média de idade
+	df[["estadocivil","escolaridade",idade"]].groupby(["estadocivil","escolaridade"]).mean()
+
+
+	-- pessoas com idade entre 30 e 50 anos, casadas e separadas
+	colunas = [""]
+
+
+# índice - campo número do python
+
+
+
+
+
+
+
+
+
+
+# --> Quantidade de linhas de colunas de um dataframe
+
+(nome do dataframe).shape
+
+Ex: df_objetivos.shape
+
+Resultado
+(30, 10) -- sendo 30 linhas e 10 colunas
+
+
+# --> Lista as primeiras linhas (5 linhas) de um dataframe
+
+(nome do dataframe).head()
+
+Ex: df_objetivos.head() -- lista as 5 primeiras linhas
+    df_objetivos.head(10) -- lista as 10 primeiras linhas
+
+
+
+
+#gráficos
+https://paulovasconcellos.com.br/15-comandos-de-matplotlib-que-talvez-voc%C3%AA-n%C3%A3o-conhe%C3%A7a-17cf88a75119
+
+

@@ -1,0 +1,147 @@
+https://minerandodados.com.br/python-para-analise-de-dados/
+https://paulovasconcellos.com.br/28-comandos-%C3%BAteis-de-pandas-que-talvez-voc%C3%AA-n%C3%A3o-conhe%C3%A7a-6ab64beefa93
+
+
+#Análise Estatística
+
+#Contador unique
+df_historias_iteracoes = [df_historias.Iteracao.unique()]
+
+#faz uma média geral
+df_historias.describe()
+
+#Conta Registros
+pd.value_counts(df_historias['Iteracao'])
+
+#Pesquisa simples
+df_historias.loc[df_historias['Iteracao']=="PI09.2"]
+
+#Pesquisa com AND
+df_historias.loc[(df_historias['Iteracao']=="PI09.2") & (df_historias['Tipo'] == "Solicitação de Serviços")]
+
+#Ordenação
+df_historias.sort_values(by='Codigo',ascending='False')
+
+#Somatório com os campos do dataset
+df_historias[df_historias['Iteracao']=='PI09.2'].count()
+
+#Abrindo arquivo Excel
+>>> xlsx = pd.ExcelFile('seu_arquivo_excel.xlsx')
+>>> df = pd.read_excel(xlsx, 'Planilha 1')
+
+
+
+# %%
+dtf_historias_cinco = dtf_historias[dtf_historias['Iteracao'] == 'PI09.5']
+
+# %%
+dtf_historias_cinco['Iteracao'].describe()
+
+# %%
+
+dtf_iteracao = dtf_historias('Iteração')
+
+# %%
+
+
+
+
+it = df_historias.Iteracao.unique()
+print(it)
+DataFrames = []
+
+for unique in it:
+    data = df_historias[df_historias.Iteracao == unique]
+    DataFrames.append(data)
+
+print("Tamanho: " + str(len(DataFrames)) + '\n')
+
+for data in DataFrames:
+    print(data)
+    print('\n')
+
+
+
+df_historias_iteracoes = [df_historias.Iteracao.unique()]
+#df_historias_iteracoes
+
+np.random.seed(123)
+e = np.random.normal(size=10)  
+dataframe=pd.DataFrame(df_historias_iteracoes, columns=['a']) 
+print (dataframe)
+
+
+#%% [Análise de Histórias]
+teste = input()
+#Importa Bibliotecas 
+import pandas as pd #Pandas
+#import datetime as dt #Datetime
+
+#[Caminho do Arquivo]
+v_diretorio_mae = 'C:\\Users\\A98718\\OneDrive - Somos Educação SA\\'
+v_subdiretorio = 'python\\PI09\\'
+#v_datahora = dt.today()
+
+#-- Informar o nome do arquivo
+v_nomearquivo = 'export.csv' 
+
+v_caminho = (   v_diretorio_mae + 
+                v_subdiretorio+
+                v_nomearquivo)
+
+#transforma os dados do .csv em um dataframe
+#v_historias = pd.read_csv("C:\\Users\\A98718\\OneDrive - Somos Educação SA\\python\\PI09\\export.csv")
+v_historias = pd.read_csv(v_caminho)
+
+print('----- [Histórias]')
+v_historias.head(10)
+
+
+#%% [markdown]
+# ##This is markdown
+
+#Análise de Histórias
+
+#Importa biblioteca do pandas
+import pandas as pd
+
+#transforma os dados do .csv em um dataframe
+v_historias = pd.read_csv("C:\\Users\\A98718\\OneDrive - Somos Educação SA\\python\\PI09\\export.csv")
+
+v_historias.rename(columns = {'Ready' : 'Lido'}, inplace = True) 
+v_historias.rename(columns = {'Blocked' : 'Bloqueado'}, inplace = True) 
+
+v_historias.columns
+
+#para exportar em CSV
+#v_historias.to_csv("C:\\Users\\A98718\\OneDrive - Somos Educação SA\\python\\PI09\\export2.csv")
+# %
+
+# %%
+
+
+
+
+
+
+#fn_ftr_listagem('PI09','F')
+#df_objetivos
+df_feature
+# %%
+fn_ftr_quantidade('PI09')
+
+# %%
+fn_ftr_listagem('PI09','F')
+
+# %%
+df_obj_resumo
+
+# %%
+df_tmp_ftr
+
+# %%
+#df_obj_resumo
+zz
+
+
+# %%
